@@ -15,7 +15,3 @@ No installation required just run the file in your browser of choice.
 ## API Reference
 
 For more information on Wia and for documentation see: http://docs.wia.io/ 
-
-## License
-
-A short snippet describing the license (MIT, Apache, etc.)

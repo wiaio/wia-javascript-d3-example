@@ -19,11 +19,15 @@
 
 <script>
 Wia.initialize({
+  // Replace with your application key from the dashboard
   appKey: "your application key"
 });
+
 var temperature = null;
+// Creates a MQTT Stream
 Wia.stream.connect({
   onSuccess: function() {
+    // Retrieves data published to the Wia platform
     Wia.sensors.subscribe(
         { device: "your device secret key",
           name: "temperature" },
@@ -40,16 +44,19 @@ var n = 40,
     random = d3.randomNormal(0, .2),
     data = d3.range(n).map(random);
 
+// Used to select the SVG in your HTML and add the latest data points
 var svg = d3.select("svg"),
     margin = {top: 20, right: 20, bottom: 20, left: 40},
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom,
     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+// Used to set the X-axis scale, in this case representing time
 var x = d3.scaleLinear()
     .domain([0, n - 1])
     .range([0, width]);
 
+// Used to set the Y-axis scale, in this case representing temperature so we have set it 0 to 50 degrees
 var y = d3.scaleLinear()
     .domain([0, 50])
     .range([height, 0]);
@@ -84,21 +91,21 @@ g.append("g")
     .on("start", tick);
 
 function tick() {
-  // Push a new data point onto the back.
+  // Adds a new data point onto the end of the SVG
   data.push(temperature);
 
-  // Redraw the line.
+  // Redraws the line between data points
   d3.select(this)
       .attr("d", line)
       .attr("transform", null);
 
-  // Slide it to the left.
+  // applies the tranform, that moves the line to the left
   d3.active(this)
       .attr("transform", "translate(" + x(-1) + ",0)")
     .transition()
       .on("start", tick);
 
-  // Pop the old data point off the front.
+  // Used to remove the oldest datapoint from the left side of the chart
   data.shift();
 }
 </script>
